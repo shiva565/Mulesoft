@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="simple-calculator" format="json">
+      <types:shape format="weave" example="examples/calculator.json-2.txt"><![CDATA[%dw 2.0
+
+type simple_calculator = {|
+  num1: Number {"typeId": "int"}, 
+  num2: Number {"typeId": "int"}
+|} {"example": "{\\\"num1\\\":6,\\\"num2\\\":2}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#6adeb83b-089e-49a3-bb8c-c667a8cc2484">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="simple-calculator"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

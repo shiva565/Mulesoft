@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3c499e42-72cb-4e1a-8f43-57ff7b8d91ef" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="calculator-apiFlow" doc:id="e368ac6c-5fd7-4163-982d-df9ae0459fad" >
+		<http:listener doc:name="Listener" doc:id="6adeb83b-089e-49a3-bb8c-c667a8cc2484" config-ref="HTTP_Listener_config" path="/calculator/{operator}"/>
+		<set-variable value='#[attributes.uriParams."operator"]' doc:name="Set Variable" doc:id="93bf15b6-458b-466e-b79d-ada27488da2a" variableName="operator"/>
+		<ee:transform doc:name="Transform Message" doc:id="ab4b8181-35a2-4497-bf5d-db82efb9feda" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	(sum: payload.num1 + payload.num2) if (vars.operator == "sum" or vars.operator == "all"),
+	(difference: payload.num1 - payload.num2) if (vars.operator == "difference" or vars.operator == "all"),
+	(product: payload.num1 * payload.num2) if (vars.operator == "product" or vars.operator == "all"),
+	(quotient: payload.num1 / payload.num2) if (vars.operator == "quotient" or vars.operator == "all")
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
