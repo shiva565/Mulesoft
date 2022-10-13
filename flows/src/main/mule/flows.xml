@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="dfdb9422-027f-4c54-851a-03b1ed749582" >
+		<http:listener-connection host="localhost" port="8082" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="33d8ae6a-602d-4d47-ad90-a30f7f7c0818" >
+		<http:listener-connection host="localhost" port="8080" />
+	</http:listener-config>
+	<flow name="mainflow" doc:id="cef54cb5-df73-431a-9d3e-b46bccd0ad7e" >
+		<http:listener doc:name="Listener" doc:id="3b975f85-9d32-4610-9bfa-cb3914dbd0f2" config-ref="HTTP_Listener_config1" path="/sampledata"/>
+		<logger level="INFO" doc:name="Logger" doc:id="a0880adb-4120-447f-be81-f59b0a70fcbe" message="flow start log"/>
+		<set-variable value="mainflow variable" doc:name="Set Variable" doc:id="3aeb606a-7dbf-496d-b10f-6ba88b980c6f" variableName="mainflowvar"/>
+		<set-payload value="mainflow - payload" doc:name="Set Payload" doc:id="0ee20b59-4ea6-4d2d-91a1-ed8cbfbe6ffe" />
+		<flow-ref doc:name="subflow" doc:id="c59e5a92-a883-4117-afb3-e0403e8e5347" name="subflow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="f3e619ba-7265-49b2-9e0e-fc639ec93da6" message="flow end log - subflow - payload, #[vars.subflowvar]"/>
+	</flow>
+</mule>

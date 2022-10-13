@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="subflow" doc:id="fbbf5f4c-1052-455f-822d-ba4ed22ee845" >
+		<logger level="INFO" doc:name="Logger" doc:id="966ba4f1-4635-4577-bddb-5f80121feb5f" message="subflow start log #[payload], #[vars.mainflowvar]"/>
+		<set-variable value="subflow variable" doc:name="Set Variable" doc:id="d07ccddf-e7c8-4ca6-95e2-827e71f58e8f" variableName="subflowvar"/>
+		<flow-ref doc:name="Flow Reference" doc:id="aa5a8315-aa95-403f-8658-11a5d27ffdf5" name="privateflow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d74edd01-c8e6-4dff-9f2f-94b5f3d0cd61" message="subflow end log"/>
+		<set-payload value="subflow - payload" doc:name="Set Payload" doc:id="32282020-6e87-4bd7-954f-a518ee427d6c" />
+	</flow>
+</mule>
