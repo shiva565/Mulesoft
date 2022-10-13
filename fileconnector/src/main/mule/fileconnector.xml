@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="7c9cd35c-bb65-4c1e-8ce7-39431d568c8d" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="966067ec-0110-438c-9261-871f51a81be4" />
+	<file:config name="File_Config1" doc:name="File Config" doc:id="edf4a607-cc44-4a7a-8b0a-0213a7bb8b9f" />
+	<flow name="fileconnectorFlow" doc:id="b64d1431-22a0-4de5-96d5-c1eaa9acf254" >
+		<http:listener doc:name="Listener" doc:id="d1f45dd0-ca1f-4a63-8ab7-38f61a18adc5" config-ref="HTTP_Listener_config" path="/fileconnector"/>
+		<file:read doc:name="Read" doc:id="fb039358-482a-4511-8c15-0392847dddac" config-ref="File_Config1" path="E:\Anypoint Studio\JSON\connector.txt"/>
+		<file:write doc:name="Write" doc:id="d1b4dc58-2178-426a-9a4a-1ffa8c332c00" config-ref="File_Config1" path="E:\Anypoint Studio\JSON\create.txt">
+		</file:write>
+		<file:delete doc:name="Delete" doc:id="575e22e0-5cd7-4b13-b7e5-c87b60917b0a" config-ref="File_Config1" path="E:\Anypoint Studio\JSON\sample2"/>
+		<logger level="INFO" doc:name="Logger" doc:id="cbcfe6ad-8c58-45d1-a864-bbf3b8e5d39d" message="#[payload]"/>
+	</flow>
+	<flow name="fileconnectorFlow1" doc:id="37ff01d8-f038-4849-a23d-08a0178c70ab" >
+		<file:listener doc:name="On New or Updated File" doc:id="9e601a28-7a9a-4fc9-8598-8344289407aa" config-ref="File_Config1" directory="E:\Anypoint Studio\JSON\sample2" moveToDirectory="E:\Anypoint Studio\JSON\sample1">
+			<scheduling-strategy >
+				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="f87c380a-158e-48df-a99d-4c8b7124e4f6" message="#[payload]"/>
+	</flow>
+</mule>
